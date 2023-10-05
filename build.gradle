@@ -54,7 +54,7 @@ test {
 
 docker {
     dependsOn build
-    name "${project.name.toLowerCase()}:${project.version}"
+    name "123banzhang/${project.name.toLowerCase()}:${project.version}"
     files bootJar.archiveFile.get().asFile
     buildArgs(['JAR_FILE': bootJar.archiveFileName.get()])
 }
