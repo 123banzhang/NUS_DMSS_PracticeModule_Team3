@@ -10,7 +10,7 @@ import org.json.JSONObject;
 
 public class OpenAiApiExample {
     public static void main(String[] args) {
-        String apiKey = "";
+        String apiKey = "OPENAI_API_KEY";
         String apiUrl = "https://api.openai.com/v1/chat/completions";
         String payload = "{"
                 + "\"model\": \"gpt-3.5-turbo\","
