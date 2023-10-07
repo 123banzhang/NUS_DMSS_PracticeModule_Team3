@@ -21,7 +21,7 @@ public class OpenAiApiController {
     public ResponseEntity<String> getCompletion(@RequestBody MessageRequest request) {
         String userMessage = request.getUserMessage();
 
-        String apiKey = "OPENAI_API_KEY";
+        String apiKey = System.getenv("OPENAI_API_KEY");
         String apiUrl = "https://api.openai.com/v1/chat/completions";
         String payload = "{"
                 + "\"model\": \"gpt-3.5-turbo\","
@@ -32,6 +32,7 @@ public class OpenAiApiController {
                 + "}";
 
         try {
+//            System.out.println(apiKey);
             URL url = new URL(apiUrl);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
