@@ -10,7 +10,7 @@ import org.json.JSONObject;
 
 public class OpenAiApiExample {
     public static void main(String[] args) {
-        String apiKey = "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";
+        String apiKey = "";
         String apiUrl = "https://api.openai.com/v1/chat/completions";
         String payload = "{"
                 + "\"model\": \"gpt-3.5-turbo\","
@@ -43,12 +43,13 @@ public class OpenAiApiExample {
             } else { // If failed
                 br = new BufferedReader(new InputStreamReader(connection.getErrorStream(), "utf-8"));
             }
+
+            StringBuilder response = new StringBuilder();
+            String responseLine = null;
+            while ((responseLine = br.readLine()) != null) {
+                response.append(responseLine.trim());
+            }
             //api回答问题的完整内容
-//            StringBuilder response = new StringBuilder();
-//            String responseLine = null;
-//            while ((responseLine = br.readLine()) != null) {
-//                response.append(responseLine.trim());
-//            }
 //            System.out.println("Response: " + response.toString());
 
             // 新代码: 解析 JSON 响应并获取特定的消息内容
