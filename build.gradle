@@ -55,6 +55,8 @@ dependencies {
     implementation 'org.freemarker:freemarker:2.3.29'
     implementation 'com.ibeetl:beetl:3.0.13.RELEASE'
 
+    implementation 'mysql:mysql-connector-java:8.0.23'
+
 }
 
 
