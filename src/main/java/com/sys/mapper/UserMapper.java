@@ -13,4 +13,5 @@ import com.sys.entity.User;
  */
 public interface UserMapper extends BaseMapper<User> {
 
+
 }

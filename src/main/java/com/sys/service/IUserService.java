@@ -2,6 +2,8 @@ package com.sys.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.sys.entity.User;
+import com.sys.vo.LoginVo;
+import com.sys.vo.RespBean;
 
 /**
  * <p>
@@ -12,5 +14,5 @@ import com.sys.entity.User;
  * @since 2023-10-08
  */
 public interface IUserService extends IService<User> {
-
+    RespBean login(LoginVo loginVo);
 }
