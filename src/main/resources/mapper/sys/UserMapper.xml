@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.sys.mapper.UserMapper">
+<mapper namespace="com.sys.mapper.UserMapper"> <!-- 请替换为你的mapper接口的全限定名 -->
 
+    <resultMap id="UserResultMap" type="com.sys.entity.User"> <!-- 请替换为你的User类的全限定名 -->
+        <id column="uid" property="uid"/>
+        <result column="nickname" property="nickname"/>
+        <result column="password" property="password"/>
+        <result column="salt" property="salt"/>
+        <result column="head" property="head"/>
+        <result column="register_date" property="registerDate" javaType="java.util.Date"/>
+        <result column="last_login_date" property="lastLoginDate" javaType="java.time.LocalDateTime"/>
+        <result column="login_count" property="loginCount"/>
+        <result column="major" property="major"/>
+    </resultMap>
 </mapper>
