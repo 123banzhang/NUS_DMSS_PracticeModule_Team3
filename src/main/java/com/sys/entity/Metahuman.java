@@ -33,6 +33,11 @@ public class Metahuman implements Serializable {
     private Long mid;
 
     /**
+     * description
+     */
+    private String description;
+
+    /**
      * 性别
      */
     private String gender;
@@ -43,9 +48,14 @@ public class Metahuman implements Serializable {
     private String name;
 
     /**
-     * Status (online/offline)
+     * subname
      */
-    private String status;
+    private String subname;
+
+    /**
+     * category
+     */
+    private String category;
 
     /**
      * 创建时间
@@ -58,14 +68,12 @@ public class Metahuman implements Serializable {
     private LocalDateTime updateTime;
 
     /**
-     * personality
+     * Status (online/offline)
      */
-    private String personality;
+    private String status;
 
     /**
-     * voice
+     * voiceId
      */
-    private String voice;
-
-
+    private Long vid;
 }

@@ -3,12 +3,18 @@ package com.sys.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sys.entity.Metahuman;
+import com.sys.entity.Voice;
 import com.sys.mapper.MetahumanMapper;
+import com.sys.mapper.VoiceMapper;
 import com.sys.service.IMetahumanService;
+import com.sys.vo.MetahumanDetailVo;
 import com.sys.vo.MetahumanInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -17,47 +23,180 @@ public class MetahumanServiceImpl extends ServiceImpl<MetahumanMapper, Metahuman
     @Autowired
     private MetahumanMapper metahumanMapper;
 
+    @Autowired
+    private VoiceMapper voiceMapper;
+
     @Override
-    public List<Metahuman> findMetahumanBycondition(MetahumanInfo metahumanInfo) {
+    public List<MetahumanDetailVo> findMetahumanByCondition(MetahumanInfo metahumanInfo) {
         QueryWrapper<Metahuman> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq(metahumanInfo.getGender() != null, "gender", metahumanInfo.getGender())
-                .eq(metahumanInfo.getName() != null, "name", metahumanInfo.getName())
-                .eq(metahumanInfo.getStatus() != null, "status", metahumanInfo.getStatus())
-                .like(metahumanInfo.getPersonality() != null, "personality", metahumanInfo.getPersonality())
-                .like(metahumanInfo.getVoice() != null, "voice", metahumanInfo.getVoice());
-        return metahumanMapper.selectList(queryWrapper);
-    }
+        queryWrapper
+                .like(metahumanInfo.getDescription() != null, "description", metahumanInfo.getDescription())
+                .like(metahumanInfo.getGender() != null, "gender", metahumanInfo.getGender())
+                .like(metahumanInfo.getName() != null, "name", metahumanInfo.getName())
+                .like(metahumanInfo.getSubname() != null, "subname", metahumanInfo.getSubname())
+                .like(metahumanInfo.getCategory() != null, "category", metahumanInfo.getCategory())
+                .like(metahumanInfo.getStatus() != null, "status", metahumanInfo.getStatus());
 
-    @Override
-    public boolean createMetahuman(MetahumanInfo metahumanInfo) {
-        Metahuman metahuman = new Metahuman();
-        metahuman.setGender(metahumanInfo.getGender())
-                .setName(metahumanInfo.getName())
-                .setStatus(metahumanInfo.getStatus())
-                .setPersonality(metahumanInfo.getPersonality())
-                .setVoice(metahumanInfo.getVoice());
-        int result = metahumanMapper.insert(metahuman);
-        return result > 0;
-    }
+        List<Metahuman> metahumans = metahumanMapper.selectList(queryWrapper);
 
-    @Override
-    public boolean updateMetahuman(Long mid, MetahumanInfo metahumanInfo) {
-        Metahuman metahuman = metahumanMapper.selectById(mid);
-        if (metahuman != null) {
-            metahuman.setGender(metahumanInfo.getGender())
-                    .setName(metahumanInfo.getName())
-                    .setStatus(metahumanInfo.getStatus())
-                    .setPersonality(metahumanInfo.getPersonality())
-                    .setVoice(metahumanInfo.getVoice());
-            int result = metahumanMapper.updateById(metahuman);
-            return result > 0;
+        List<MetahumanDetailVo> vos = new ArrayList<>();
+        for (Metahuman metahuman : metahumans) {
+            MetahumanDetailVo vo = new MetahumanDetailVo();
+            vo.setDescription(metahuman.getDescription())
+                    .setGender(metahuman.getGender())
+                    .setName(metahuman.getName())
+                    .setSubname(metahuman.getSubname())
+                    .setCategory(metahuman.getCategory())
+                    .setStatus(metahuman.getStatus());
+
+            Voice voice = voiceMapper.selectById(metahuman.getVid());
+            if (voice != null) {
+                vo.setSpeaker(voice.getSpeaker())
+                        .setPitch(voice.getPitch())
+                        .setSpeed(voice.getSpeed())
+                        .setEmotion(voice.getEmotion())
+                        .setVoicesource(voice.getVoicesource());
+            }
+
+            vos.add(vo);
         }
+
+        return vos;
+    }
+
+    @Override
+    @Transactional
+    public boolean createMetahuman(MetahumanDetailVo metahumanDetail) {
+        // Creating a Voice entity and inserting it into the voice table
+        Voice voice = new Voice();
+        voice.setSpeaker(metahumanDetail.getSpeaker())
+                .setPitch(metahumanDetail.getPitch())
+                .setSpeed(metahumanDetail.getSpeed())
+                .setEmotion(metahumanDetail.getEmotion())
+                .setVoicesource(metahumanDetail.getVoicesource());
+
+        int voiceResult = voiceMapper.insert(voice);
+
+        // Checking if the voice entry is created successfully
+        if (voiceResult <= 0) {
+            return false;
+        }
+
+        // Creating a Metahuman entity and setting the voiceId to the generated voice id
+        LocalDateTime now = LocalDateTime.now(); // get current time
+        Metahuman metahuman = new Metahuman();
+        metahuman.setGender(metahumanDetail.getGender())
+                .setName(metahumanDetail.getName())
+                .setStatus(metahumanDetail.getStatus())
+                .setCreateTime(now)
+                .setUpdateTime(now)
+                .setVid(voice.getVid()); // Setting the generated voiceId
+
+        int metahumanResult = metahumanMapper.insert(metahuman);
+
+        return metahumanResult > 0;
+    }
+
+    @Override
+    @Transactional
+    public boolean updateMetahuman(Long mid, MetahumanDetailVo metahumanDetail) {
+        Metahuman metahuman = metahumanMapper.selectById(mid);
+
+        if (metahuman != null) {
+            LocalDateTime now = LocalDateTime.now(); // get current time
+
+            // Update Metahuman attributes
+            metahuman.setGender(metahumanDetail.getGender())
+                    .setName(metahumanDetail.getName())
+                    .setStatus(metahumanDetail.getStatus())
+                    .setUpdateTime(now);
+
+            int metahumanResult = metahumanMapper.updateById(metahuman);
+
+            // Check if the Metahuman update was successful
+            if (metahumanResult <= 0) {
+                return false;
+            }
+
+            // Update Voice attributes if vid is not null
+            if (metahuman.getVid() != null) {
+                Voice voice = voiceMapper.selectById(metahuman.getVid());
+
+                if (voice != null) {
+                    voice.setSpeaker(metahumanDetail.getSpeaker())
+                            .setPitch(metahumanDetail.getPitch())
+                            .setSpeed(metahumanDetail.getSpeed())
+                            .setEmotion(metahumanDetail.getEmotion())
+                            .setVoicesource(metahumanDetail.getVoicesource());
+
+                    int voiceResult = voiceMapper.updateById(voice);
+
+                    // Check if the Voice update was successful
+                    return voiceResult > 0;
+                }
+            }
+        }
+
         return false;
     }
 
     @Override
+    @Transactional
     public boolean deleteMetahuman(Long mid) {
-        int result = metahumanMapper.deleteById(mid);
-        return result > 0;
+        Metahuman metahuman = metahumanMapper.selectById(mid);
+
+        if (metahuman != null && metahuman.getVid() != null) {
+            // Deleting the associated Voice entity first
+            int voiceResult = voiceMapper.deleteById(metahuman.getVid());
+
+            // Check if the Voice deletion was successful
+            if (voiceResult <= 0) {
+                return false;
+            }
+        }
+
+        // Deleting the Metahuman entity
+        int metahumanResult = metahumanMapper.deleteById(mid);
+
+        return metahumanResult > 0;
     }
+
+    @Override
+    public MetahumanDetailVo findMetahumanDetailVoById(long mid) {
+        MetahumanDetailVo detailVo = new MetahumanDetailVo();
+
+        // Fetching the Metahuman entity based on the mid
+        Metahuman metahuman = metahumanMapper.selectById(mid);
+
+        if (metahuman != null) {
+            // Setting Metahuman attributes to the MetahumanDetailVo object
+            detailVo.setDescription(metahuman.getDescription())
+                    .setGender(metahuman.getGender())
+                    .setName(metahuman.getName())
+                    .setSubname(metahuman.getSubname())
+                    .setCategory(metahuman.getCategory())
+                    .setStatus(metahuman.getStatus())
+                    .setCreateTime(metahuman.getCreateTime())
+                    .setUpdateTime(metahuman.getUpdateTime());
+
+            // If the Metahuman has an associated Voice entity, fetch and set Voice attributes
+            if (metahuman.getVid() != null) {
+                Voice voice = voiceMapper.selectById(metahuman.getVid());
+
+                if (voice != null) {
+                    detailVo.setSpeaker(voice.getSpeaker())
+                            .setPitch(voice.getPitch())
+                            .setSpeed(voice.getSpeed())
+                            .setEmotion(voice.getEmotion())
+                            .setVoicesource(voice.getVoicesource());
+                }
+            }
+
+            return detailVo;
+        }
+
+        // Returning null if no Metahuman was found for the given mid
+        return null;
+    }
+
 }

@@ -1,7 +1,7 @@
 package com.sys.controller;
 
-import com.sys.entity.Metahuman;
 import com.sys.service.IMetahumanService;
+import com.sys.vo.MetahumanDetailVo;
 import com.sys.vo.MetahumanInfo;
 import com.sys.vo.RespBean;
 import com.sys.vo.RespBeanEnum;
@@ -19,28 +19,49 @@ public class MetahumanController {
 
     @PostMapping("/list")
     public RespBean listMetahumans(@RequestBody MetahumanInfo metahumanInfo) {
-        List<Metahuman> metahumans = metahumanService.findMetahumanBycondition(metahumanInfo);
+        List<MetahumanDetailVo> metahumans = metahumanService.findMetahumanByCondition(metahumanInfo);
         return RespBean.success(metahumans);
     }
 
     @GetMapping("/{mid}")
-    public RespBean getMetahuman(@PathVariable Long mid) {
-        Metahuman metahuman = metahumanService.getById(mid);
-        if (metahuman != null) {
-            return RespBean.success(metahuman);
+    public RespBean getMetahumanDetail(@PathVariable Long mid) {
+        MetahumanDetailVo vo = metahumanService.findMetahumanDetailVoById(mid);
+        if (vo != null) {
+            return RespBean.success(vo);
         } else {
             return RespBean.error(RespBeanEnum.METAHUMAN_NOT_FOUND);
         }
     }
 
     @PutMapping("/{mid}")
-    public RespBean updateMetahuman(@PathVariable Long mid, @RequestBody MetahumanInfo metahumanInfo) {
-        boolean updated = metahumanService.updateMetahuman(mid, metahumanInfo);
+    public RespBean updateMetahumanDetailVo(@PathVariable Long mid, @RequestBody MetahumanDetailVo vo) {
+        boolean updated = metahumanService.updateMetahuman(mid, vo);
         if (updated) {
             return RespBean.success();
         } else {
             return RespBean.error(RespBeanEnum.METAHUMAN_UPDATE_FAILED);
         }
     }
+
+    @PostMapping("/create")
+    public RespBean createMetahumanDetailVo(@RequestBody MetahumanDetailVo metahumanDetailVo) {
+        boolean created = metahumanService.createMetahuman(metahumanDetailVo);
+        if (created) {
+            return RespBean.success("Metahuman created successfully.");
+        } else {
+            return RespBean.error(RespBeanEnum.METAHUMAN_CREATE_FAIL); // Using the enum here
+        }
+    }
+
+    @DeleteMapping("/{mid}")
+    public RespBean deleteMetahumanDetailVo(@PathVariable Long mid) {
+        boolean deleted = metahumanService.deleteMetahuman(mid);
+        if (deleted) {
+            return RespBean.success("Metahuman deleted successfully.");
+        } else {
+            return RespBean.error(RespBeanEnum.METAHUMAN_DELETE_FAIL); // Using the enum here
+        }
+    }
+
 
 }
