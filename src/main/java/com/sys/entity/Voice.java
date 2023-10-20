@@ -30,9 +30,28 @@ public class Voice implements Serializable {
     private Long vid;
 
     /**
+     * speaker
+     */
+    private String speaker;
+
+    /**
+     * pitch
+     */
+    private Float pitch;
+
+    /**
+     * speed
+     */
+    private Float speed;
+
+    /**
+     * emotion
+     */
+    private String emotion;
+
+    /**
      * voice链接
      */
     private String voicesource;
-
 
 }
