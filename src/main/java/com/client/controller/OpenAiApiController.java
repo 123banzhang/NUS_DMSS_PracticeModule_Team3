@@ -1,5 +1,8 @@
 package com.client.controller;
 
+import com.client.entitiy.MessageRequest;
+import com.client.entitiy.Message;
+import com.client.entitiy.ChatRequest;
 import org.json.JSONObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,23 +16,49 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import org.springframework.web.bind.annotation.*;
+import java.util.*;
+
+
+
 @RestController
 public class OpenAiApiController {
+    private final Map<String, List<Message>> userSessions = new HashMap<>();
 
     @PostMapping("/api/completion")
 //    public ResponseEntity<String> getCompletion(@RequestBody String userMessage) {
-    public ResponseEntity<String> getCompletion(@RequestBody MessageRequest request) {
-        String userMessage = request.getUserMessage();
+//    public ResponseEntity<String> getCompletion(@RequestBody MessageRequest request) {
+    public ResponseEntity<String> getCompletion(@RequestBody ChatRequest request) {
+        //可以联系上下文的版本
+        String userSessionId = request.getSessionId();
+        String userMessageContent = request.getUserMessage();
+
+        Message userMessage = new Message("user", userMessageContent);
+        List<Message> sessionMessages = userSessions.getOrDefault(userSessionId, new ArrayList<>());
+        sessionMessages.add(userMessage);
+        userSessions.put(userSessionId, sessionMessages);
+
+//        String userMessage = request.getUserMessage();
 
         String apiKey = System.getenv("OPENAI_API_KEY");
         String apiUrl = "https://api.openai.com/v1/chat/completions";
-        String payload = "{"
-                + "\"model\": \"gpt-3.5-turbo\","
-                + "\"messages\": ["
-                + "  {\"role\": \"system\", \"content\": \"You are a helpful assistant.\"},"
-                + "  {\"role\": \"user\", \"content\": \"" + userMessage + "\"}"
-                + "]"
-                + "}";
+        //可以联系上下文的版本
+        // Construct the payload using all the messages in the session
+        StringBuilder payloadBuilder = new StringBuilder("{ \"model\": \"gpt-3.5-turbo\", \"messages\": [");
+        for (Message msg : sessionMessages) {
+            payloadBuilder.append("{\"role\": \"").append(msg.getRole()).append("\", \"content\": \"").append(msg.getContent()).append("\"},");
+        }
+        payloadBuilder.deleteCharAt(payloadBuilder.length() - 1);  // Remove trailing comma
+        payloadBuilder.append("]}");
+        String payload = payloadBuilder.toString();
+        //不可以联系上下文的版本
+//        String payload = "{"
+//                + "\"model\": \"gpt-3.5-turbo\","
+//                + "\"messages\": ["
+//                + "  {\"role\": \"system\", \"content\": \"You are a helpful assistant.\"},"
+//                + "  {\"role\": \"user\", \"content\": \"" + userMessage + "\"}"
+//                + "]"
+//                + "}";
 
         try {
 //            System.out.println(apiKey);
