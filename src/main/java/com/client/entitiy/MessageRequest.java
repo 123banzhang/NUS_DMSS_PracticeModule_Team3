@@ -1,4 +1,4 @@
-package com.client.controller;
+package com.client.entitiy;
 
 public class MessageRequest {
     private String userMessage;
