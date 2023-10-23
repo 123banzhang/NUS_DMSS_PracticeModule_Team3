@@ -5,9 +5,7 @@ import com.sys.vo.LoginVo;
 import com.sys.vo.RespBean;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -20,14 +18,14 @@ public class LoginController {
     @Resource
     private IUserService userService;
 
-    @RequestMapping("/toLogin")
-    public String toLogin() {
-        return "login";
-    }
+//    @RequestMapping("/toLogin")
+//    public String toLogin() {
+//        return "login";
+//    }
 
-    @RequestMapping("/doLogin")
+    @RequestMapping(value = "/doLogin", method = RequestMethod.POST)
     @ResponseBody
-    public RespBean doLogin(LoginVo loginVo, HttpServletRequest request) {
+    public RespBean doLogin(@RequestBody LoginVo loginVo, HttpServletRequest request) {
         return userService.login(loginVo, request);
     }
 }
