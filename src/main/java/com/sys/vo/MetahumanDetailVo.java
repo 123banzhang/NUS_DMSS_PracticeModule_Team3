@@ -81,4 +81,6 @@ public class MetahumanDetailVo {
      */
     private String voicesource;
 
+    private String avatarid;
+
 }

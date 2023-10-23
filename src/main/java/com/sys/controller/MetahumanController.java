@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/sys/metahuman")
+@CrossOrigin
 public class MetahumanController {
 
     @Autowired

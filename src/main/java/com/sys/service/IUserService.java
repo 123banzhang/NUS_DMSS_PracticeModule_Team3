@@ -5,6 +5,8 @@ import com.sys.entity.User;
 import com.sys.vo.LoginVo;
 import com.sys.vo.RespBean;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * <p>
  * 用户表 服务类
@@ -14,5 +16,6 @@ import com.sys.vo.RespBean;
  * @since 2023-10-08
  */
 public interface IUserService extends IService<User> {
-    RespBean login(LoginVo loginVo);
+
+    RespBean login(LoginVo loginVo, HttpServletRequest request);
 }

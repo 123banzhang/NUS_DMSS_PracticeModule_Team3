@@ -76,4 +76,6 @@ public class Metahuman implements Serializable {
      * voiceId
      */
     private Long vid;
+
+    private String avatarid;
 }

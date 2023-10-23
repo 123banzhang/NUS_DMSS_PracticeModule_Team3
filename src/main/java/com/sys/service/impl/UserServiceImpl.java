@@ -4,8 +4,6 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sys.entity.User;
 import com.sys.mapper.UserMapper;
 import com.sys.service.IUserService;
-//import com.sys.utils.MD5Util;
-//import com.sys.utils.ValidatorUtil;
 import com.sys.vo.LoginVo;
 import com.sys.vo.RespBean;
 import com.sys.vo.RespBeanEnum;
@@ -13,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * <p>
@@ -28,26 +27,30 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     private UserMapper userMapper;
 
     @Override
-    public RespBean login(LoginVo loginVo) {
+    public RespBean login(LoginVo loginVo, HttpServletRequest request) {
         String mobile = loginVo.getMobile();
         String password = loginVo.getPassword();
+
+        // 检查手机号和密码是否为空
         if (StringUtils.isEmpty(mobile) || StringUtils.isEmpty(password)) {
             return RespBean.error(RespBeanEnum.LOGIN_ERROR);
         }
-//        if (!ValidatorUtil.isMobile(mobile)) {
-//            return RespBean.error(RespBeanEnum.MOBILE_ERROR);
-//        }
-        //根据手机号获取用户
+
+        // 根据手机号获取用户
         User user = userMapper.selectById(mobile);
-        if (null == user) {
+        if (user == null) {
             return RespBean.error(RespBeanEnum.LOGIN_ERROR);
         }
-//校验密码
-//        if
-//        (!MD5Util.formPassToDBPass(password, user.getSalt()).equals(user.getPassword())) {
-//            return RespBean.error(RespBeanEnum.LOGIN_ERROR);
-//        }
-        return RespBean.success();
+
+        // 校验密码，这里你可以使用你自己的加密和校验逻辑
+        if (!password.equals(user.getPassword())) { // 这里只是一个简单的示例，实际应用中密码应该是加密的
+            return RespBean.error(RespBeanEnum.LOGIN_ERROR);
+        }
+
+        // 登录成功，将用户信息存入 session
+        request.getSession().setAttribute("user", user);
+
+        return RespBean.success(user);
     }
 }
 
