@@ -5,6 +5,7 @@ import com.sys.entity.User;
 import com.sys.mapper.UserMapper;
 import com.sys.service.IUserService;
 import com.sys.vo.LoginVo;
+import com.sys.vo.RegisterVo;
 import com.sys.vo.RespBean;
 import com.sys.vo.RespBeanEnum;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 
 /**
  * <p>
@@ -51,6 +53,22 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         request.getSession().setAttribute("user", user);
 
         return RespBean.success(user);
+    }
+
+    @Override
+    public RespBean register(RegisterVo registerVo) {
+        User user = new User();
+        user.setUid(registerVo.getMobile()); // Assuming mobile is used as uid
+        user.setPassword(registerVo.getPassword()); // Note: Ensure this is hashed and salted
+        user.setNickname(registerVo.getNickname());
+        user.setRegisterDate(new Date());
+        // Set other necessary fields
+        int result = userMapper.insert(user);
+        if (result > 0) {
+            return RespBean.success("Registration successful");
+        } else {
+            return RespBean.error(RespBeanEnum.REGISTRATION_ERROR);
+        }
     }
 }
 

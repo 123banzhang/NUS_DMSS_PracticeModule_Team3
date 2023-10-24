@@ -2,6 +2,7 @@ package com.sys.controller;
 
 import com.sys.service.IUserService;
 import com.sys.vo.LoginVo;
+import com.sys.vo.RegisterVo;
 import com.sys.vo.RespBean;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -27,5 +28,11 @@ public class LoginController {
     @ResponseBody
     public RespBean doLogin(@RequestBody LoginVo loginVo, HttpServletRequest request) {
         return userService.login(loginVo, request);
+    }
+
+    @RequestMapping(value = "/doRegister", method = RequestMethod.POST)
+    @ResponseBody
+    public RespBean doRegister(@RequestBody RegisterVo registerVo, HttpServletRequest request) {
+        return userService.register(registerVo);
     }
 }
