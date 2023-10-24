@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/sys/metahuman")
+@CrossOrigin
 public class MetahumanController {
 
     @Autowired
@@ -43,6 +44,10 @@ public class MetahumanController {
         }
     }
 
+    /**
+     * @param metahumanDetailVo
+     * @return
+     */
     @PostMapping("/create")
     public RespBean createMetahumanDetailVo(@RequestBody MetahumanDetailVo metahumanDetailVo) {
         boolean created = metahumanService.createMetahuman(metahumanDetailVo);

@@ -60,6 +60,11 @@ public class User implements Serializable {
     private Integer loginCount;
 
     private String major;
+    /**
+     * 身份
+     * admin/user
+     */
+    private String identity;
 
     public Long getUid() {
         return uid;

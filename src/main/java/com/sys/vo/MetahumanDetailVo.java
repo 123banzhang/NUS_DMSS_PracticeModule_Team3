@@ -1,36 +1,20 @@
-package com.sys.entity;
+package com.sys.vo;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * <p>
- * metahuman表
- * </p>
- *
- * @author zhijian-wang
- * @since 2023-10-16
+ * 主要用于返回
  */
 @Data
 @ToString
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-public class Metahuman implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-
-    /**
-     * metahumanID
-     */
-    @TableId(value = "mid", type = IdType.AUTO)
-    private Long mid;
+public class MetahumanDetailVo {
 
     /**
      * description
@@ -73,9 +57,30 @@ public class Metahuman implements Serializable {
     private String status;
 
     /**
-     * voiceId
+     * speaker
      */
-    private Long vid;
+    private String speaker;
+
+    /**
+     * pitch
+     */
+    private Float pitch;
+
+    /**
+     * speed
+     */
+    private Float speed;
+
+    /**
+     * emotion
+     */
+    private String emotion;
+
+    /**
+     * voice链接
+     */
+    private String voicesource;
 
     private String avatarid;
+
 }

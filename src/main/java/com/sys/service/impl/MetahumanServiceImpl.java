@@ -47,7 +47,8 @@ public class MetahumanServiceImpl extends ServiceImpl<MetahumanMapper, Metahuman
                     .setName(metahuman.getName())
                     .setSubname(metahuman.getSubname())
                     .setCategory(metahuman.getCategory())
-                    .setStatus(metahuman.getStatus());
+                    .setStatus(metahuman.getStatus())
+                    .setAvatarid(metahuman.getAvatarid());
 
             Voice voice = voiceMapper.selectById(metahuman.getVid());
             if (voice != null) {
@@ -90,7 +91,8 @@ public class MetahumanServiceImpl extends ServiceImpl<MetahumanMapper, Metahuman
                 .setStatus(metahumanDetail.getStatus())
                 .setCreateTime(now)
                 .setUpdateTime(now)
-                .setVid(voice.getVid()); // Setting the generated voiceId
+                .setVid(voice.getVid())
+                .setAvatarid(metahumanDetail.getAvatarid()); // Setting the generated voiceId
 
         int metahumanResult = metahumanMapper.insert(metahuman);
 
@@ -109,7 +111,9 @@ public class MetahumanServiceImpl extends ServiceImpl<MetahumanMapper, Metahuman
             metahuman.setGender(metahumanDetail.getGender())
                     .setName(metahumanDetail.getName())
                     .setStatus(metahumanDetail.getStatus())
-                    .setUpdateTime(now);
+                    .setUpdateTime(now)
+                    .setDescription(metahumanDetail.getDescription())
+                    .setAvatarid(metahumanDetail.getAvatarid());
 
             int metahumanResult = metahumanMapper.updateById(metahuman);
 
@@ -177,7 +181,8 @@ public class MetahumanServiceImpl extends ServiceImpl<MetahumanMapper, Metahuman
                     .setCategory(metahuman.getCategory())
                     .setStatus(metahuman.getStatus())
                     .setCreateTime(metahuman.getCreateTime())
-                    .setUpdateTime(metahuman.getUpdateTime());
+                    .setUpdateTime(metahuman.getUpdateTime())
+                    .setAvatarid(metahuman.getAvatarid());
 
             // If the Metahuman has an associated Voice entity, fetch and set Voice attributes
             if (metahuman.getVid() != null) {

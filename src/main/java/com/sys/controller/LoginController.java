@@ -5,38 +5,27 @@ import com.sys.vo.LoginVo;
 import com.sys.vo.RespBean;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping("/login")
 @Slf4j
+@CrossOrigin
 public class LoginController {
     @Resource
     private IUserService userService;
 
-    /**
-     * 跳转登录页 *
-     *
-     * @return
-     */
-    @RequestMapping("/toLogin")
-    public String toLogin() {
-        return "login";
-    }
+//    @RequestMapping("/toLogin")
+//    public String toLogin() {
+//        return "login";
+//    }
 
-    /**
-     * 登录
-     *
-     * @return
-     */
-    @RequestMapping("/doLogin")
+    @RequestMapping(value = "/doLogin", method = RequestMethod.POST)
     @ResponseBody
-    public RespBean doLogin(LoginVo loginVo) {
-        log.info(loginVo.toString());
-        System.out.println(userService.login(loginVo));
-        return userService.login(loginVo);
+    public RespBean doLogin(@RequestBody LoginVo loginVo, HttpServletRequest request) {
+        return userService.login(loginVo, request);
     }
 }
