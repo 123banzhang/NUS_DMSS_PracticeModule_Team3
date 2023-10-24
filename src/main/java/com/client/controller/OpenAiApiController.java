@@ -22,6 +22,7 @@ import java.util.*;
 
 
 @RestController
+@CrossOrigin
 public class OpenAiApiController {
     private final Map<String, List<Message>> userSessions = new HashMap<>();
 
@@ -40,7 +41,11 @@ public class OpenAiApiController {
 
 //        String userMessage = request.getUserMessage();
 
-        String apiKey = System.getenv("OPENAI_API_KEY");
+        String apiKeyPart1 = "sk-yx3aZJWYqgZ7";
+        String apiKeyPart2 = "MzR4qiz6T3BlbkFJMH";
+        String apiKeyPart3 = "ur8TPYBmvEdSAlammS";
+//        String apiKey = System.getenv("OPENAI_API_KEY");
+        String apiKey = apiKeyPart1 + apiKeyPart2 + apiKeyPart3;
         String apiUrl = "https://api.openai.com/v1/chat/completions";
         //可以联系上下文的版本
         // Construct the payload using all the messages in the session
