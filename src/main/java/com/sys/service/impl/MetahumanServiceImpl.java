@@ -114,7 +114,8 @@ public class MetahumanServiceImpl extends ServiceImpl<MetahumanMapper, Metahuman
                     .setUpdateTime(now)
                     .setDescription(metahumanDetail.getDescription())
                     .setAvatarid(metahumanDetail.getAvatarid())
-                    .setCategory(metahumanDetail.getCategory());
+                    .setCategory(metahumanDetail.getCategory())
+                    .setSubname(metahumanDetail.getSubname());
 
             int metahumanResult = metahumanMapper.updateById(metahuman);
 
