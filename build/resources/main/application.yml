@@ -1,11 +1,12 @@
 spring:
+  jpa.properties.hibernate.dialect: org.hibernate.dialect.MySQL5InnoDBDialect
   thymeleaf:
     cache: false
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/oasis?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
     username: root
-    password: 123456
+    password: 12345678
     hikari:
       pool-name: DateHikariCP
       minimum-idle: 5

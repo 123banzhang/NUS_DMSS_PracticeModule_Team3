@@ -1,5 +1,4 @@
 import com.Application;
-import com.sys.service.impl.MetahumanServiceImpl;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
