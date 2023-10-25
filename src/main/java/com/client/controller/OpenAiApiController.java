@@ -1,6 +1,5 @@
 package com.client.controller;
 
-import com.client.entitiy.MessageRequest;
 import com.client.entitiy.Message;
 import com.client.entitiy.ChatRequest;
 import org.json.JSONObject;
@@ -40,7 +39,6 @@ public class OpenAiApiController {
         userSessions.put(userSessionId, sessionMessages);
 
 //        String userMessage = request.getUserMessage();
-
         String apiKeyPart1 = "sk-yx3aZJWYqgZ7";
         String apiKeyPart2 = "MzR4qiz6T3BlbkFJMH";
         String apiKeyPart3 = "ur8TPYBmvEdSAlammS";
