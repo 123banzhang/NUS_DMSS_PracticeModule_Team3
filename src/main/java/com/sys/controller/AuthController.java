@@ -1,5 +1,6 @@
 package com.sys.controller;
 
+import com.sys.entity.User;
 import com.sys.service.IUserService;
 import com.sys.vo.AuthVo;
 import com.sys.vo.LoginVo;
@@ -32,7 +33,7 @@ public class AuthController {
 
     @RequestMapping(value = "/verify", method = RequestMethod.POST)
     @ResponseBody
-    public RespBean verify(@RequestBody AuthVo authVo) {
+    public User verify(@RequestBody AuthVo authVo) {
         return userService.verify(authVo.getToken());
     }
 

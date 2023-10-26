@@ -9,6 +9,7 @@ import com.sys.vo.LoginVo;
 import com.sys.vo.RegisterVo;
 import com.sys.vo.RespBean;
 import com.sys.vo.RespBeanEnum;
+import io.jsonwebtoken.Claims;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -33,35 +34,47 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         String mobile = loginVo.getMobile();
         String password = loginVo.getPassword();
 
-        // 检查手机号和密码是否为空
+        // Check if mobile and password are not empty
         if (StringUtils.isEmpty(mobile) || StringUtils.isEmpty(password)) {
             return RespBean.error(RespBeanEnum.LOGIN_ERROR);
         }
 
-        // 根据手机号获取用户
+        // Get user by mobile
         User user = userMapper.selectById(mobile);
         if (user == null) {
             return RespBean.error(RespBeanEnum.LOGIN_ERROR);
         }
 
-        // 校验密码，这里你可以使用你自己的加密和校验逻辑
-        if (!password.equals(user.getPassword())) { // 这里只是一个简单的示例，实际应用中密码应该是加密的
+        // Validate password
+        if (!password.equals(user.getPassword())) {
             return RespBean.error(RespBeanEnum.LOGIN_ERROR);
         }
 
-        // 生成token
-        String token = JwtUtil.createToken(user); // Assuming JwtUtil.createToken() generates a JWT
+        // Generate JWT token
+        String token = JwtUtil.createJWT(user.getUid(), "User Authenticated", JwtUtil.JWT_TTL);
         return RespBean.success(token);
 
     }
 
     @Override
-    public RespBean verify(String token) {
-        User user = JwtUtil.verifyToken(token); // Assuming JwtUtil.verifyToken() extracts user info from a JWT
-        if (user != null) {
-            return RespBean.success(user);
-        } else {
-            return RespBean.error(RespBeanEnum.VERIFICATION_ERROR);
+    public User verify(String token) {
+        try {
+            Claims claims = JwtUtil.parseJWT(token);
+            String userId = claims.getId();
+
+            // Validate token by retrieving the user
+            User user = userMapper.selectById(userId);
+
+            if (user == null) {
+                // Handle case where user does not exist
+                throw new Exception("User does not exist.");
+            }
+
+            return user;
+        } catch (Exception e) {
+            // Handle other exceptions like invalid token
+            e.printStackTrace();
+            return null;
         }
     }
 
@@ -72,9 +85,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         user.setUid(registerVo.getMobile()); // Assuming mobile is used as uid
         user.setPassword(registerVo.getPassword()); // Note: Ensure this is hashed and salted
         user.setNickname(registerVo.getNickname());
-        user.setRegisterDate(now);
-        user.setLastLoginDate(now);
-        user.setLoginCount(0);
         user.setHead(registerVo.getHead());
         user.setMajor(registerVo.getMajor());
         user.setIdentity("user");

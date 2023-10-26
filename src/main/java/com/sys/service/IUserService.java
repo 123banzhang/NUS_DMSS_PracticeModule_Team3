@@ -20,7 +20,7 @@ public interface IUserService extends IService<User> {
 
     RespBean login(LoginVo loginVo);
 
-    RespBean verify(String token);
+    User verify(String token);
 
     RespBean register(RegisterVo registerVo);
 }
