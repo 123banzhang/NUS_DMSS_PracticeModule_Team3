@@ -9,7 +9,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.sys.authApi;
+import com.sys.utils.interceptor.authApi;
 import com.sys.vo.authVo;
 import com.sys.entity.User;
 
