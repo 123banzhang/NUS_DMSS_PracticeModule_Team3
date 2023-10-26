@@ -6,8 +6,6 @@ import com.sys.vo.LoginVo;
 import com.sys.vo.RegisterVo;
 import com.sys.vo.RespBean;
 
-import javax.servlet.http.HttpServletRequest;
-
 /**
  * <p>
  * 用户表 服务类
@@ -18,7 +16,11 @@ import javax.servlet.http.HttpServletRequest;
  */
 public interface IUserService extends IService<User> {
 
-    RespBean login(LoginVo loginVo, HttpServletRequest request);
+//    RespBean login(LoginVo loginVo, HttpServletRequest request);
+
+    RespBean login(LoginVo loginVo);
+
+    User verify(String token);
 
     RespBean register(RegisterVo registerVo);
 }
