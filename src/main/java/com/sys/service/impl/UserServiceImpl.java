@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sys.entity.User;
 import com.sys.mapper.UserMapper;
 import com.sys.service.IUserService;
+import com.sys.utils.JwtUtil;
 import com.sys.vo.LoginVo;
 import com.sys.vo.RegisterVo;
 import com.sys.vo.RespBean;
@@ -12,8 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -29,7 +29,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     private UserMapper userMapper;
 
     @Override
-    public RespBean login(LoginVo loginVo, HttpServletRequest request) {
+    public RespBean login(LoginVo loginVo) {
         String mobile = loginVo.getMobile();
         String password = loginVo.getPassword();
 
@@ -49,19 +49,35 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             return RespBean.error(RespBeanEnum.LOGIN_ERROR);
         }
 
-        // 登录成功，将用户信息存入 session
-        request.getSession().setAttribute("user", user);
+        // 生成token
+        String token = JwtUtil.createToken(user); // Assuming JwtUtil.createToken() generates a JWT
+        return RespBean.success(token);
 
-        return RespBean.success(user);
+    }
+
+    @Override
+    public RespBean verify(String token) {
+        User user = JwtUtil.verifyToken(token); // Assuming JwtUtil.verifyToken() extracts user info from a JWT
+        if (user != null) {
+            return RespBean.success(user);
+        } else {
+            return RespBean.error(RespBeanEnum.VERIFICATION_ERROR);
+        }
     }
 
     @Override
     public RespBean register(RegisterVo registerVo) {
         User user = new User();
+        LocalDateTime now = LocalDateTime.now();
         user.setUid(registerVo.getMobile()); // Assuming mobile is used as uid
         user.setPassword(registerVo.getPassword()); // Note: Ensure this is hashed and salted
         user.setNickname(registerVo.getNickname());
-        user.setRegisterDate(new Date());
+        user.setRegisterDate(now);
+        user.setLastLoginDate(now);
+        user.setLoginCount(0);
+        user.setHead(registerVo.getHead());
+        user.setMajor(registerVo.getMajor());
+        user.setIdentity("user");
         // Set other necessary fields
         int result = userMapper.insert(user);
         if (result > 0) {

@@ -1,6 +1,7 @@
 package com.sys.controller;
 
 import com.sys.service.IUserService;
+import com.sys.vo.AuthVo;
 import com.sys.vo.LoginVo;
 import com.sys.vo.RegisterVo;
 import com.sys.vo.RespBean;
@@ -9,13 +10,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 
 @Controller
-@RequestMapping("/login")
+@RequestMapping("/auth")
 @Slf4j
 @CrossOrigin
-public class LoginController {
+public class AuthController {
     @Resource
     private IUserService userService;
 
@@ -24,15 +24,21 @@ public class LoginController {
 //        return "login";
 //    }
 
-    @RequestMapping(value = "/doLogin", method = RequestMethod.POST)
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
-    public RespBean doLogin(@RequestBody LoginVo loginVo, HttpServletRequest request) {
-        return userService.login(loginVo, request);
+    public RespBean login(@RequestBody LoginVo loginVo) {
+        return userService.login(loginVo);
     }
 
-    @RequestMapping(value = "/doRegister", method = RequestMethod.POST)
+    @RequestMapping(value = "/verify", method = RequestMethod.POST)
     @ResponseBody
-    public RespBean doRegister(@RequestBody RegisterVo registerVo, HttpServletRequest request) {
+    public RespBean verify(@RequestBody AuthVo authVo) {
+        return userService.verify(authVo.getToken());
+    }
+
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    @ResponseBody
+    public RespBean register(@RequestBody RegisterVo registerVo) {
         return userService.register(registerVo);
     }
 }
