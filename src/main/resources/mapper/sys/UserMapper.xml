@@ -8,5 +8,6 @@
         <result column="password" property="password"/>
         <result column="head" property="head"/>
         <result column="major" property="major"/>
+        <result column="identity" property="identity"/>
     </resultMap>
 </mapper>
