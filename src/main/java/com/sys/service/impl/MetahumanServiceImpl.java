@@ -42,7 +42,8 @@ public class MetahumanServiceImpl extends ServiceImpl<MetahumanMapper, Metahuman
         List<MetahumanDetailVo> vos = new ArrayList<>();
         for (Metahuman metahuman : metahumans) {
             MetahumanDetailVo vo = new MetahumanDetailVo();
-            vo.setDescription(metahuman.getDescription())
+            vo.setMid(metahuman.getMid())
+                    .setDescription(metahuman.getDescription())
                     .setGender(metahuman.getGender())
                     .setName(metahuman.getName())
                     .setSubname(metahuman.getSubname())
