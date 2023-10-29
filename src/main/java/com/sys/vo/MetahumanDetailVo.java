@@ -15,7 +15,10 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 public class MetahumanDetailVo {
-
+    /**
+     * metahumanID
+     */
+    private Long mid;
     /**
      * description
      */
