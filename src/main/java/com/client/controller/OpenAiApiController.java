@@ -65,9 +65,9 @@ public class OpenAiApiController {
         Message initialMessage = new Message("system", prompt);
 
         //有上下文记忆，但是切换metahuman，就会仍然停留在上一个metahuman
-        List<Message> sessionMessages = userSessions.getOrDefault(userSessionId, new ArrayList<>());
+//        List<Message> sessionMessages = userSessions.getOrDefault(userSessionId, new ArrayList<>());
         //没有上下文记忆
-//        List<Message> sessionMessages = new ArrayList<>();
+        List<Message> sessionMessages = new ArrayList<>();
 
         sessionMessages.add(initialMessage);
 
