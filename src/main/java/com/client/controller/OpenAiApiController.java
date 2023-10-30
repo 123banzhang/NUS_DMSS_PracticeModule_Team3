@@ -48,7 +48,6 @@ public class OpenAiApiController {
     public ResponseEntity<String> getCompletion(@RequestBody ChatRequest request) {
 
         long metahumanId = request.getMetahumanId();
-//        long metahumanId = 12;
         MetahumanDetailVo metahumanDetail = metahumanService.findMetahumanDetailVoById(metahumanId);
         // 检查metahumanDetail是否为空
         if (metahumanDetail == null) {
