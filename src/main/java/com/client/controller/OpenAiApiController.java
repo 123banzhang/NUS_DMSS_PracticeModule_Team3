@@ -40,8 +40,8 @@ public class OpenAiApiController {
     // 将MetaHuman的详细信息转换为提示
     private String convertMetahumanToPrompt(MetahumanDetailVo metahuman) {
         // 基于你的需求和Metahuman的属性，构造合适的提示
-        return String.format("Currently, you are addressed as %s, identified by the gender %s. Below are the specific tasks you are expected to perform, the knowledge base you should rely on, or the guidelines on how users anticipate your responses: %s.",
-                metahuman.getName(), metahuman.getGender(), metahuman.getDescription());
+        return String.format("Currently, your name is set as %s, identified by the gender %s. Below are the specific tasks you are expected to perform, the knowledge base you should rely on, or the guidelines on how users anticipate your responses: %s. This profile was created on %s and last updated on %s.",
+                metahuman.getName(), metahuman.getGender(), metahuman.getDescription(), metahuman.getCreateTime(), metahuman.getUpdateTime());
     }
 
     @PostMapping("/completion")
@@ -64,7 +64,11 @@ public class OpenAiApiController {
         //将提示作为第一条消息，然后将用户的消息添加到聊天列表中,之后使用这个sessionMessages列表与GPT API进行交互。
         Message initialMessage = new Message("system", prompt);
 
-        List<Message> sessionMessages = new ArrayList<>();
+        //有上下文记忆，但是切换metahuman，就会仍然停留在上一个metahuman
+        List<Message> sessionMessages = userSessions.getOrDefault(userSessionId, new ArrayList<>());
+        //没有上下文记忆
+//        List<Message> sessionMessages = new ArrayList<>();
+
         sessionMessages.add(initialMessage);
 
         Message userMessage = new Message("user", userMessageContent);
@@ -92,7 +96,7 @@ public class OpenAiApiController {
 
         //可以联系上下文的版本 设置payload
         // Construct the payload using all the messages in the session
-        StringBuilder payloadBuilder = new StringBuilder("{ \"model\": \"gpt-3.5-turbo\", \"messages\": [");
+        StringBuilder payloadBuilder = new StringBuilder("{ \"model\": \"gpt-3.5-turbo-16k\", \"messages\": [");
         for (Message msg : sessionMessages) {
             payloadBuilder.append("{\"role\": \"").append(msg.getRole()).append("\", \"content\": \"").append(msg.getContent()).append("\"},");
         }
@@ -141,6 +145,4 @@ public class OpenAiApiController {
             return ResponseEntity.status(500).body("Internal Server Error");
         }
     }
-
-
 }
