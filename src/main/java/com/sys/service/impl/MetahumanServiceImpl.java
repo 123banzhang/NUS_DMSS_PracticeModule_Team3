@@ -31,11 +31,11 @@ public class MetahumanServiceImpl extends ServiceImpl<MetahumanMapper, Metahuman
         QueryWrapper<Metahuman> queryWrapper = new QueryWrapper<>();
         queryWrapper
                 .like(metahumanInfo.getDescription() != null, "description", metahumanInfo.getDescription())
-                .like(metahumanInfo.getGender() != null, "gender", metahumanInfo.getGender())
+                .eq(metahumanInfo.getGender() != null, "gender", metahumanInfo.getGender())
                 .like(metahumanInfo.getName() != null, "name", metahumanInfo.getName())
                 .like(metahumanInfo.getSubname() != null, "subname", metahumanInfo.getSubname())
-                .like(metahumanInfo.getCategory() != null, "category", metahumanInfo.getCategory())
-                .like(metahumanInfo.getStatus() != null, "status", metahumanInfo.getStatus());
+                .eq(metahumanInfo.getCategory() != null, "category", metahumanInfo.getCategory())
+                .eq(metahumanInfo.getStatus() != null, "status", metahumanInfo.getStatus());
 
         List<Metahuman> metahumans = metahumanMapper.selectList(queryWrapper);
 
