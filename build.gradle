@@ -103,7 +103,7 @@ test {
 
 docker {
     dependsOn build
-    name "123banzhang/oasis-auth:1.0"
+    name "123banzhang/oasis-auth:1.1"
     files bootJar.archiveFile.get().asFile
     buildArgs(['JAR_FILE': bootJar.archiveFileName.get()])
 }
