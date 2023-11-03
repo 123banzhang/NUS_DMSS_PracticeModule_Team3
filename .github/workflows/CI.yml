@@ -10,8 +10,7 @@ name: Java CI with Gradle
 on:
   push:
     branches: [ "Mcro_Auth" ]
-permissions:
-  contents: read
+
 
 jobs:
   build:
