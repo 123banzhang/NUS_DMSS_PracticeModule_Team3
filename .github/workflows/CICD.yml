@@ -101,7 +101,10 @@ jobs:
       run: |
             aws eks --region ap-southeast-1 update-kubeconfig --name oasis2
             kubectl get services
-
+    - name: Delete and Redeployment
+      run: |
+            kubectl delete deployment springboot-app
+            # kubectl apply -f deployment.yaml 
 
             
     # - name: Build and Push Docker Image
