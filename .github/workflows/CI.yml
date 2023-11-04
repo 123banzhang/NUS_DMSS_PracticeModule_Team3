@@ -1,45 +1,82 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-# This workflow will build a Java project with Gradle and cache/restore any dependencies to improve the workflow execution time
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-gradle
+# # This workflow uses actions that are not certified by GitHub.
+# # They are provided by a third-party and are governed by
+# # separate terms of service, privacy policy, and support
+# # documentation.
+# # This workflow will build a Java project with Gradle and cache/restore any dependencies to improve the workflow execution time
+# # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-gradle
 
+# name: Java CI with Gradle
+
+# on:
+#   push:
+#     branches: [ "Mcro_Auth" ]
+
+
+# jobs:
+#   build:
+
+#     runs-on: ubuntu-latest
+
+#     steps:
+#     - uses: actions/checkout@v3
+
+    
+#     # - name: Set up JDK 17
+#     #   uses: actions/setup-java@v3
+#     #   with:
+#     #     java-version: '17'
+#     #     distribution: 'temurin'
+        
+#     - name: Grant execute permission for gradlew
+#       run: chmod +x gradlew
+      
+#     # - name: Build with Gradle
+#     #   uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25 # v2.6.0
+#     #   with:
+#     #     arguments: build
+    
+#     - name: Build Docker Image
+#       run: ./gradlew docker
+      
+
+      
+#     - name: Build and Push Docker Image
+#       uses: mr-smithers-excellent/docker-build-push@v4
+#       with:
+#           image: 123banzhang/oasis-auth
+#           registry: docker.io
+#           username: ${{ secrets.DOCKER_USERNAME }}
+#           password: ${{ secrets.DOCKER_PASSWORD }}
+#           tag: 2.1
+        
 name: Java CI with Gradle
 
 on:
   push:
     branches: [ "Mcro_Auth" ]
 
-
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-    
-    # - name: Set up JDK 17
-    #   uses: actions/setup-java@v3
-    #   with:
-    #     java-version: '17'
-    #     distribution: 'temurin'
-        
+    - name: Set up JDK 17
+      uses: actions/setup-java@v2
+      with:
+        java-version: '17'  # 指定你的项目所需的 Java 版本
+
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
-      
-    # - name: Build with Gradle
-    #   uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25 # v2.6.0
-    #   with:
-    #     arguments: build
-    
-    - name: Build Docker Image
-      run: ./gradlew docker
-      
 
-      
+    - name: Build with Gradle
+      run: ./gradlew build  # 使用 Gradle 构建项目，生成 JAR 文件
+
+    - name: Build Docker Image
+      run: ./gradlew docker  # 使用 Gradle Docker 插件构建 Docker 镜像
+
     - name: Build and Push Docker Image
       uses: mr-smithers-excellent/docker-build-push@v4
       with:
@@ -48,4 +85,3 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
           tag: 2.1
-        
