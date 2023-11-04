@@ -10,6 +10,7 @@ import com.sys.vo.RegisterVo;
 import com.sys.vo.RespBean;
 import com.sys.vo.RespBeanEnum;
 import io.jsonwebtoken.Claims;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -89,10 +90,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         user.setMajor(registerVo.getMajor());
         user.setIdentity("user");
         // Set other necessary fields
-        int result = userMapper.insert(user);
-        if (result > 0) {
-            return RespBean.success("Registration successful");
-        } else {
+        try {
+            int result = userMapper.insert(user);
+            if (result > 0) {
+                return RespBean.success("Registration successful");
+            } else {
+                return RespBean.error(RespBeanEnum.REGISTRATION_ERROR);
+            }
+        } catch (DuplicateKeyException e) {
+            // 这里你应该返回一个表明手机号码已存在的错误码，例如 500213
             return RespBean.error(RespBeanEnum.REGISTRATION_ERROR);
         }
     }
