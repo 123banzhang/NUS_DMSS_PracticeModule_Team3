@@ -95,7 +95,7 @@ jobs:
             aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
             aws configure set region ap-southeast-1
     - name: Install kubectl
-      run:  sudo snap install kubectl
+      run:  sudo snap install kubectl --classic
 
     - name: Get kubeconfig
       run: |
