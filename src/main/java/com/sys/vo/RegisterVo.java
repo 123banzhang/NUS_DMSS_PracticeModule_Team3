@@ -1,7 +1,6 @@
 package com.sys.vo;
 
 import lombok.Data;
-import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotNull;
 
@@ -11,7 +10,6 @@ public class RegisterVo {
     private String mobile;
 
     @NotNull
-    @Length(min = 32)
     private String password;
 
     @NotNull
