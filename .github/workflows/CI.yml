@@ -82,12 +82,12 @@ jobs:
     - name: Push Docker Image
       run: ./gradlew docker dockerPush
 
-    - name: Install AWS CLI
-      run: |
-            curl "https://d1vvhvl2y92vvt.cloudfront.net/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-            sudo apt install unzip
-            unzip -q awscliv2.zip 
-            sudo ./aws/install
+    # - name: Install AWS CLI
+    #   run: |
+    #         curl "https://d1vvhvl2y92vvt.cloudfront.net/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+    #         sudo apt install unzip
+    #         unzip -q awscliv2.zip 
+    #         sudo ./aws/install
 
     - name: Configure AWS CLI
       run: |
