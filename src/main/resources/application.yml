@@ -94,5 +94,5 @@ logging:
 #    - /**
 
 ##修改端口号为8080
-#server:
-#  port: 8080
+server:
+  port: 8081
