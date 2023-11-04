@@ -104,7 +104,7 @@ jobs:
     - name: Delete and Redeployment
       run: |
             kubectl delete deployment springboot-app
-            # kubectl apply -f deployment.yaml 
+            kubectl apply -f deployment.yaml 
 
             
     # - name: Build and Push Docker Image
