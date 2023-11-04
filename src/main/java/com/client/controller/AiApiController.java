@@ -7,19 +7,11 @@ import com.client.service.LanguageModelService;
 import com.client.service.OpenAiLanguageModelService;
 import com.sys.service.impl.MetahumanServiceImpl;
 import com.sys.vo.MetahumanDetailVo;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 import org.springframework.web.bind.annotation.*;
 import java.util.*;
@@ -29,7 +21,7 @@ import java.util.*;
 @RestController
 @CrossOrigin
 @RequestMapping("/api")
-public class OpenAiApiController {
+public class AiApiController {
     private final Map<String, List<Message>> userSessions = new HashMap<>();
 
     @Autowired
