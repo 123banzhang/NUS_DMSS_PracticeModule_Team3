@@ -75,8 +75,8 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew build  # 使用 Gradle 构建项目，生成 JAR 文件
 
-    - name: Build Docker Image
-      run: ./gradlew docker  # 使用 Gradle Docker 插件构建 Docker 镜像
+    # - name: Build Docker Image
+    #   run: ./gradlew docker  # 使用 Gradle Docker 插件构建 Docker 镜像
 
     - name: Build and Push Docker Image
       uses: mr-smithers-excellent/docker-build-push@v4
