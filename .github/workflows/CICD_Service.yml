@@ -53,7 +53,7 @@ name: Java CI with Gradle
 
 on:
   push:
-    branches: [ "Mcro_Auth" ]
+    branches: [ "Micro_Services" ]
 
 jobs:
   build:
