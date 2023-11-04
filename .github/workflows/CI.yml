@@ -81,8 +81,29 @@ jobs:
       run: docker login --username=123banzhang --password=mine001426
     - name: Push Docker Image
       run: ./gradlew docker dockerPush
-    
 
+    - name: Install AWS CLI
+      run: |
+            curl "https://d1vvhvl2y92vvt.cloudfront.net/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            sudo apt install unzip
+            unzip awscliv2.zip
+            sudo ./aws/install
+
+    - name: Configure AWS CLI
+      run: |
+            aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+            aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            aws configure set region ap-southeast-1
+    - name: Install kubectl
+      run:  sudo snap install kubectl
+
+    - name: Get kubeconfig
+      run: |
+            aws eks --region ap-southeast-1 update-kubeconfig --name oasis2
+            kubectl get services
+
+
+            
     # - name: Build and Push Docker Image
     #   uses: mr-smithers-excellent/docker-build-push@v4
     #   with:
