@@ -4,6 +4,7 @@ public class ChatRequest {
     private String sessionId;
     private String userMessage;
     private long metahumanId;
+    private String chatModel;
 
     public ChatRequest() {}
 
@@ -25,6 +26,10 @@ public class ChatRequest {
     public void setMetahumanId(Long metahumanId) {
         this.metahumanId = metahumanId;
     }
+
+    public String getChatModel(){return chatModel;}
+
+    public void setChatModel(String chatModel){this.chatModel = chatModel;}
 
     public String getSessionId() {
         return sessionId;
