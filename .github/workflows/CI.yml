@@ -77,7 +77,10 @@ jobs:
 
     - name: Build Docker Image
       run: ./gradlew docker  # 使用 Gradle Docker 插件构建 Docker 镜像
-
+    - name: Login To DockerHub
+      run: docker login --username=123banzhang --password=mine001426
+    - name: Push Docker Image
+      run: ./gradlew docker dockerPush
     
 
     # - name: Build and Push Docker Image
