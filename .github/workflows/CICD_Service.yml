@@ -73,10 +73,14 @@ jobs:
       run: chmod +x gradlew
 
     - name: Build with Gradle
-      run: ./gradlew build  # 使用 Gradle 构建项目，生成 JAR 文件
-
+      run: ./gradlew build  # Build the project using Gradle and generate the JAR file
+      
+    - name: Test
+      run: ./gradlew test  
+    
     - name: Build Docker Image
-      run: ./gradlew docker  # 使用 Gradle Docker 插件构建 Docker 镜像
+      run: ./gradlew docker  
+      
     - name: Login To DockerHub
       run: docker login --username=123banzhang --password=mine001426
     - name: Push Docker Image
@@ -94,13 +98,15 @@ jobs:
             aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
             aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
             aws configure set region ap-southeast-1
+            
     - name: Install kubectl
       run:  sudo snap install kubectl --classic
 
-    - name: Get kubeconfig
+    - name: Get kubeconfig    # connect to the eks cluster
       run: |
             aws eks --region ap-southeast-1 update-kubeconfig --name oasis2
             kubectl get services
+            
     - name: Delete and Redeployment
       run: |
             kubectl delete deployment springboot-app
