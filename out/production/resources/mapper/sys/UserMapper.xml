@@ -6,11 +6,8 @@
         <id column="uid" property="uid"/>
         <result column="nickname" property="nickname"/>
         <result column="password" property="password"/>
-        <result column="salt" property="salt"/>
         <result column="head" property="head"/>
-        <result column="register_date" property="registerDate" javaType="java.util.Date"/>
-        <result column="last_login_date" property="lastLoginDate" javaType="java.time.LocalDateTime"/>
-        <result column="login_count" property="loginCount"/>
         <result column="major" property="major"/>
+        <result column="identity" property="identity"/>
     </resultMap>
 </mapper>

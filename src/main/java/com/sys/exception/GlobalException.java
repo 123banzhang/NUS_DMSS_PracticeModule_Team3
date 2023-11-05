@@ -12,11 +12,16 @@ import lombok.NoArgsConstructor;
  * @date 2022/3/2 5:32 下午
  * @ClassName: GlobalException
  */
-@Data
-@NoArgsConstructor
+
 @AllArgsConstructor
 public class GlobalException extends RuntimeException {
 
     private RespBeanEnum respBeanEnum;
+    public GlobalException() {
+        super();
+    }
+    public RespBeanEnum getRespBeanEnum() {
+        return respBeanEnum;
+    }
 
 }
