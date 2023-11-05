@@ -26,6 +26,11 @@ public class MetahumanServiceImpl extends ServiceImpl<MetahumanMapper, Metahuman
     @Autowired
     private VoiceMapper voiceMapper;
 
+    /**
+     * 
+     * @param metahumanInfo
+     * @return
+     */
     @Override
     public List<MetahumanDetailVo> findMetahumanByCondition(MetahumanInfo metahumanInfo) {
         QueryWrapper<Metahuman> queryWrapper = new QueryWrapper<>();
