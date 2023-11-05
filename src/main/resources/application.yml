@@ -3,9 +3,12 @@ spring:
     cache: false
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/oasis?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
-    username: root
-    password: 12345678
+#    url: jdbc:mysql://127.0.0.1:3306/oasis?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+#    username: root
+#    password: 12345678
+    url: jdbc:mysql://db-mysql-nyc3-71952-do-user-14734697-0.c.db.ondigitalocean.com:25060/MetaBase
+    username: doadmin
+    password: AVNS_ZB9Fc4MY1ke5ZvWFZBT
     hikari:
       pool-name: DateHikariCP
       minimum-idle: 5
@@ -91,5 +94,5 @@ logging:
 #    - /**
 
 ##修改端口号为8080
-#server:
-#  port: 8080
+server:
+  port: 8081
