@@ -9,8 +9,8 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.sys.utils.interceptor.authApi;
-import com.sys.vo.authVo;
+
+import com.sys.vo.AuthVo;
 import com.sys.entity.User;
 
 @Component
@@ -28,7 +28,7 @@ public class AuthInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         // 当您需要使用Feign客户端时，从ObjectProvider获取它
         authApi remoteServiceClient = remoteServiceProvider.getIfAvailable();
-        authVo authReq = new authVo();
+        AuthVo authReq = new AuthVo();
         authReq.token = request.getHeader("AuthToken");
         User userInfo = remoteServiceClient.verifyUser(authReq);
         if (userInfo == null) {
