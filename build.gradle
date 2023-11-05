@@ -72,28 +72,14 @@ dependencies {
 
     implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
     implementation 'io.jsonwebtoken:jjwt-impl:0.11.2'
-    implementation 'io.jsonwebtoken:jjwt-jackson:0.11.2' // this is needed to use jjwt with jack
+    implementation 'io.jsonwebtoken:jjwt-jackson:0.11.2' // this is needed to use jjwt with jackson
 
-//    // Spring Cloud Gateway
-//    implementation 'org.springframework.cloud:spring-cloud-starter-gateway'
-//
-//    // Spring Boot Starter Webflux for reactive programming
-//    implementation 'org.springframework.boot:spring-boot-starter-webflux'
-//
-//    // Spring Boot Starter Security for authentication and authorization
-//    implementation 'org.springframework.boot:spring-boot-starter-security'
 }
 
 
 //dependencyManagement {
 //    imports {
 //        mavenBom "org.springframework.boot:spring-boot-dependencies:2.6.2"
-//    }
-//}
-//
-//dependencyManagement {
-//    imports {
-//        mavenBom "org.springframework.cloud:spring-cloud-dependencies:2021.0.0"
 //    }
 //}
 
@@ -103,7 +89,8 @@ test {
 
 docker {
     dependsOn build
-    name "123banzhang/oasis-auth:2.3"
+    name "123banzhang/${project.name.toLowerCase()}:${project.version}"
+//    name "123banzhang/${project.name.toLowerCase()}:1.0.1"
     files bootJar.archiveFile.get().asFile
     buildArgs(['JAR_FILE': bootJar.archiveFileName.get()])
 }

@@ -10,7 +10,7 @@ import javax.crypto.spec.SecretKeySpec;
 import java.util.Base64;
 import java.util.Date;
 
-public class JwtUtil{
+public class JwtUtil {
 
     /**
      * 默认有效期 30min
@@ -24,12 +24,13 @@ public class JwtUtil{
 
     /**
      * 创建令牌
-     * @param id 令牌唯一标识
-     * @param subject 主题信息
+     *
+     * @param id        令牌唯一标识
+     * @param subject   主题信息
      * @param ttlMillis 有效期
      * @return
      */
-    public static String createJWT(String id, String subject, Long ttlMillis){
+    public static String createJWT(String id, String subject, Long ttlMillis) {
 
         // 指定算法
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
@@ -60,8 +61,6 @@ public class JwtUtil{
                 .setIssuedAt(now) // 签发时间
                 .signWith(signatureAlgorithm, secretKey) // 签名以及密钥.参1：签名算法；参2：密钥（盐）
                 .setExpiration(expDate);// 设置过期时间
-
-
 
 
         return jwtBuilder.compact();
@@ -95,9 +94,10 @@ public class JwtUtil{
 
     /**
      * 生成加密 generalKey：对当前密钥进行再次Base64加密
+     *
      * @return
      */
-    public static SecretKey generalKey(){
+    public static SecretKey generalKey() {
         byte[] encodeKey = Base64.getEncoder().encode(JwtUtil.JWT_KEY.getBytes());
         SecretKey key = new SecretKeySpec(encodeKey, 0, encodeKey.length, "HmacSHA256");
         return key;
@@ -107,7 +107,7 @@ public class JwtUtil{
     /**
      * 解析令牌
      */
-    public static Claims parseJWT(String jwt){
+    public static Claims parseJWT(String jwt) {
         SecretKey secretKey = generalKey();
         return Jwts.parser()
                 .setSigningKey(secretKey)
