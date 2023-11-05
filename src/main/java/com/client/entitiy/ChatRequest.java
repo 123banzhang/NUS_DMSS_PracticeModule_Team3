@@ -27,13 +27,9 @@ public class ChatRequest {
         this.metahumanId = metahumanId;
     }
 
-    public String getChatModel() {
-        return chatModel;
-    }
+    public String getChatModel(){return chatModel;}
 
-    public void setChatModel(String chatModel) {
-        this.chatModel = chatModel;
-    }
+    public void setChatModel(String chatModel){this.chatModel = chatModel;}
 
     public String getSessionId() {
         return sessionId;

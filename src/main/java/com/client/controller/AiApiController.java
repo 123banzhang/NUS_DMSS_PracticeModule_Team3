@@ -92,13 +92,6 @@ public class AiApiController {
                 break;
         }
 
-//        String languageModelType = "openai";
-//        if ("openai".equals(languageModelType)) {
-//            languageModelService = new OpenAiLanguageModelService(userSessions);
-//        } else if ("another".equals(languageModelType)) {
-//            languageModelService = new AnotherLanguageModelService();
-//        }
-
         // 使用 LanguageModelService 与语言模型进行交互
         ResponseEntity<String> modelResponse = languageModelService.sendMessage(sessionMessages);
         // 返回模型的响应

@@ -1,0 +1,123 @@
+# # This workflow uses actions that are not certified by GitHub.
+# # They are provided by a third-party and are governed by
+# # separate terms of service, privacy policy, and support
+# # documentation.
+# # This workflow will build a Java project with Gradle and cache/restore any dependencies to improve the workflow execution time
+# # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-gradle
+
+# name: Java CI with Gradle
+
+# on:
+#   push:
+#     branches: [ "Mcro_Auth" ]
+
+
+# jobs:
+#   build:
+
+#     runs-on: ubuntu-latest
+
+#     steps:
+#     - uses: actions/checkout@v3
+
+    
+#     # - name: Set up JDK 17
+#     #   uses: actions/setup-java@v3
+#     #   with:
+#     #     java-version: '17'
+#     #     distribution: 'temurin'
+        
+#     - name: Grant execute permission for gradlew
+#       run: chmod +x gradlew
+      
+#     # - name: Build with Gradle
+#     #   uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25 # v2.6.0
+#     #   with:
+#     #     arguments: build
+    
+#     - name: Build Docker Image
+#       run: ./gradlew docker
+      
+
+      
+#     - name: Build and Push Docker Image
+#       uses: mr-smithers-excellent/docker-build-push@v4
+#       with:
+#           image: 123banzhang/oasis-auth
+#           registry: docker.io
+#           username: ${{ secrets.DOCKER_USERNAME }}
+#           password: ${{ secrets.DOCKER_PASSWORD }}
+#           tag: 2.1
+        
+name: Java CI with Gradle
+
+on:
+  push:
+    branches: [ "Micro_Services" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+
+    - name: Build with Gradle
+      run: ./gradlew build  # Build the project using Gradle and generate the JAR file
+      
+    - name: Test
+      run: ./gradlew test  
+    
+    - name: Build Docker Image
+      run: ./gradlew docker  
+      
+    - name: Login To DockerHub
+      run: docker login --username=123banzhang --password=mine001426
+    - name: Push Docker Image
+      run: ./gradlew docker dockerPush
+
+    # - name: Install AWS CLI
+    #   run: |
+    #         curl "https://d1vvhvl2y92vvt.cloudfront.net/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+    #         sudo apt install unzip
+    #         unzip -q awscliv2.zip 
+    #         sudo ./aws/install
+
+    - name: Configure AWS CLI
+      run: |
+            aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+            aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            aws configure set region ap-southeast-1
+            
+    - name: Install kubectl
+      run:  sudo snap install kubectl --classic
+
+    - name: Get kubeconfig    # connect to the eks cluster
+      run: |
+            aws eks --region ap-southeast-1 update-kubeconfig --name oasis2
+            kubectl get services
+            
+    - name: Delete and Redeployment
+      run: |
+            kubectl delete deployment springboot-app
+            kubectl apply -f deployment.yaml 
+
+            
+    # - name: Build and Push Docker Image
+    #   uses: mr-smithers-excellent/docker-build-push@v4
+    #   with:
+    #       image: 123banzhang/oasis-auth
+    #       registry: docker.io
+    #       username: ${{ secrets.DOCKER_USERNAME }}
+    #       password: ${{ secrets.DOCKER_PASSWORD }}
+    #       tag: 2.2
